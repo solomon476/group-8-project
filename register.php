@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Insert new user
                 $stmt = $pdo->prepare("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)");
                 if ($stmt->execute([$username, $email, $password_hash])) {
-                    $_SESSION['success_msg'] = "Registration successful! You can now login.";
+                    $_SESSION['success_msg'] = "Registration successful! This project has been worked on by solomon and his peers. You can now login.";
                     header("Location: index.php");
                     exit;
                 }
