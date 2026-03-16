@@ -12,12 +12,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const confirmPassword = document.getElementById('confirm_password');
 
             if (password && confirmPassword) {
-                if (password.value !== confirmPassword.value) {
-                    isValid = false;
-                    errorMsg = "Passwords do not match!";
-                } else if (password.value.length < 8) {
-                    isValid = false;
-                    errorMsg = "Password must be at least 8 characters long.";
+                // Only validate password rules if user has typed something
+                // HTML5 'required' will handle the empty state
+                if (password.value !== '' || confirmPassword.value !== '') {
+                    if (password.value !== confirmPassword.value) {
+                        isValid = false;
+                        errorMsg = "Passwords do not match!";
+                    } else if (password.value.length < 8) {
+                        isValid = false;
+                        errorMsg = "Password must be at least 8 characters long.";
+                    }
                 }
             }
 

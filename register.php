@@ -31,27 +31,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = "Password must be at least 8 characters long.";
     }
     else {
-        // Check if username or email already exists
-        $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
-        $stmt->execute([$username, $email]);
+        try {
+            // Check if username or email already exists
+            $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
+            $stmt->execute([$username, $email]);
 
-        if ($stmt->rowCount() > 0) {
-            $error = "Username or email already exists.";
-        }
-        else {
-            // Hash password securely
-            $password_hash = password_hash($password, PASSWORD_BCRYPT);
-
-            // Insert new user
-            $stmt = $pdo->prepare("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)");
-            if ($stmt->execute([$username, $email, $password_hash])) {
-                $_SESSION['success_msg'] = "Registration successful! You can now login.";
-                header("Location: index.php");
-                exit;
+            if ($stmt->rowCount() > 0) {
+                $error = "Username or email already exists.";
             }
             else {
-                $error = "Something went wrong. Please try again later.";
+                // Hash password securely
+                $password_hash = password_hash($password, PASSWORD_BCRYPT);
+
+                // Insert new user
+                $stmt = $pdo->prepare("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)");
+                if ($stmt->execute([$username, $email, $password_hash])) {
+                    $_SESSION['success_msg'] = "Registration successful! You can now login.";
+                    header("Location: index.php");
+                    exit;
+                }
+                else {
+                    $error = "Something went wrong inserting the user. Please try again.";
+                }
             }
+        } catch (PDOException $e) {
+            // Catch database errors like missing tables
+            $error = "Database Error: " . $e->getMessage();
         }
     }
 }
