@@ -33,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Store data in session
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
+                $_SESSION['login_success'] = "This project has been worked on by solomon and his peers";
 
                 // Redirect to dashboard
                 header("Location: dashboard.php");

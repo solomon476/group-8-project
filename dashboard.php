@@ -34,6 +34,13 @@ if (!$user) {
     <div style="margin-bottom: 2rem;">
         <h3 style="margin-top: 0;">Welcome, <?php echo htmlspecialchars($user['username']); ?>!</h3>
         <p style="color: var(--text-secondary);">Here is your profile information.</p>
+        
+        <?php if (isset($_SESSION['login_success'])): ?>
+            <div class="alert success" style="margin-top: 1rem;">
+                <?php echo htmlspecialchars($_SESSION['login_success']); ?>
+            </div>
+            <?php unset($_SESSION['login_success']); ?>
+        <?php endif; ?>
     </div>
 
     <div style="background: var(--bg-color); padding: 1.5rem; border-radius: 0.5rem;">
